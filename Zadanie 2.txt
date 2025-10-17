@@ -1,0 +1,4 @@
+Zadanie 2 (1)
+Rozwiązałam ten problem tak że, znajduję punkty, które jak elastyczna gumka, otoczyliby wszystkie inne punkty. Wybierałam najbardziej prawy punkt i od niego szła w stronę zgodnie wskazówek zegara, szukając następnego najbardziej prawego punktu i tak aż nie dojdę do pierwszego punktu. Zastosowałam algorytm Jarvis’ Marc do rozwiązania tego problemu. 
+Zadanie 2 (2)
+Miałam problem z tym zadaniem, po jedno było to zrobić tak, żeby wyszukać te proste, ale tylko poziome lub pionowe, a chciałam zrobić tak, żeby dało się to wyliczyć nawet dla pochyłych prostych. Więc, zdecydowałam że spróbuję znaleźć chociażby odpowiadające parę punktów i potem z pomocą funkcji obracania, to tak ich obrócę że będę jakby liczyla te poziome i pionowe proste.
