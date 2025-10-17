@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <iomanip>
+#include <cmath>
+#include <limits>
 using namespace std;
 
 //budujemy strukturę dla przechowywania współrzędnych punkt
@@ -60,17 +62,60 @@ void otoczkaF(vector<point> kropki) {
     }
 }
 
+// oblicza nowy punkt "nowy", ktory wychodzi z obracania punktu p wokol (0,0)o kat a
+point obracanie(point p, float a) {
+    point nowy;
+    nowy.x=p.x*cos(a)-p.y*sin(a);
+    nowy.y=p.x*sin(a)+p.y*cos(a);
+    return nowy;
+}
 //glowny program
 int main() {
     int n;
     cout<<"Podaj liczbe punktow: ";
     cin>>n;
     vector<point> kropki(n);
+    vector<point> kropki1(n);
     cout<<"Podaj wspolrzedne punktow (x y): ";
     for (int i=0; i<n; i++) {
         cin>>kropki[i].x>>kropki[i].y;
     }
-    otoczkaF(kropki);
+    for (int i=0; i<n; i++) {
+        kropki1[i].x=kropki[i].x;
+        kropki1[i].y=kropki[i].y;
+    }
+    //przepisuje d na poczatek najwieksza wartosc
+    float d=numeric_limits<float>::max();
 
+    // przechodzimy przez wszystkie pary punktów
+    for (int i=0; i<n; ++i) {
+        for (int j = i + 1; j < n; ++j) {
+            float dx=kropki1[j].x-kropki1[i].x;
+            float dy=kropki1[j].y-kropki1[i].y;
+            //porownujemy roznice wspolrzednych dwoch punktow i szukamy roznych od siebie
+            if (fabs(dx)<1e-6f && fabs(dy)<1e-6f)
+                continue;
+            //jak znachodzimy takie punkty, to liczymy kat nachylenia prostej miedzy nimi
+            float a=atan2(dy, dx);
+            float minY=numeric_limits<float>::max();
+            float maxY=numeric_limits<float>::lowest();
+            //obracamy wszystkie punkty, tak zeby prosta przechodzaca przez te punkty stala pozioma
+            for (int i=0; i < kropki.size(); i++) {
+                point p=kropki1[i];
+                point nowy=obracanie(p, -a);
+                if (nowy.y<minY)
+                    minY=nowy.y;
+                if (nowy.y>maxY)
+                    maxY=nowy.y;
+            }
+            //i obliczamy szerokosc prostej
+            float width=maxY-minY;
+            if (width<d)
+                d=width;
+        }
+    }
+    otoczkaF(kropki);
+    cout<<fixed<<setprecision(4)<<showpoint;
+    cout<<endl<<"Proste: d="<<d;
     return 0;
 }
